@@ -13,7 +13,7 @@ public interface OrderDetailService {
 
     OrderDetailDto getDetailById(int idOrderDetail);
 
-    OrderDetailDto saveOrderDetail(OrderDetailDto order);
+    OrderDetailDto saveOrderDetail(OrderDetailDto orderDetailDto);
 
     boolean deleteDetail(int idOrderDetail);
 

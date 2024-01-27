@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.store.shopping_cart.shoppingcart.security.models.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -44,6 +45,8 @@ public class Order {
     private Date creatDate;
     @UpdateTimestamp
     private Date updateDate;
+    @OneToOne(mappedBy = "idOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private User idUser;
 
     @JsonIgnore
     @OneToMany(mappedBy = "idOrder", cascade = CascadeType.ALL, orphanRemoval = true)
