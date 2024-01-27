@@ -1,0 +1,19 @@
+version: '3'
+services:
+  postgres_shopping_cart:
+    container_name: shopping_cart_pg
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-aragon}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ajar24332}
+      POSTGRES_DB: shopping-cart
+    volumes:
+      - ./db/data/postgres:/data/postgres
+    ports:
+      - '5434:5432'
+    networks:
+      - shopping_cart_network
+    restart: always
+networks:
+  shopping_cart_network:
+    driver: bridge
