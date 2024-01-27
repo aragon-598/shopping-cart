@@ -1,5 +1,10 @@
 package com.store.shopping_cart.shoppingcart.models;
 
+import java.util.Date;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,5 +37,9 @@ public class Payment {
     private PaymentType paymentType;
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+    @CreationTimestamp
+    private Date creatDate;
+    @UpdateTimestamp
+    private Date updateDate;
 
 }

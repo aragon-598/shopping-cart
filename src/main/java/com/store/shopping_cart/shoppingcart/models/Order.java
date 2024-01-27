@@ -3,6 +3,9 @@ package com.store.shopping_cart.shoppingcart.models;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -37,7 +40,9 @@ public class Order {
     private OrderStatus status;
     @OneToOne(mappedBy = "idOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private Payment idPayment;
+    @CreationTimestamp
     private Date creatDate;
+    @UpdateTimestamp
     private Date updateDate;
 
     @JsonIgnore
