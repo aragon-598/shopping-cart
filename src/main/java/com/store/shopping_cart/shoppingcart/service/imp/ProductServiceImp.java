@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.store.shopping_cart.shoppingcart.client.ProductServiceClient;
 import com.store.shopping_cart.shoppingcart.dto.ProductResponse;
+import com.store.shopping_cart.shoppingcart.exception.ProductNotFoundException;
 import com.store.shopping_cart.shoppingcart.service.ProductService;
 
 @Service
@@ -23,7 +24,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductResponse getASingleProduct(Integer id) {
-        return Optional.ofNullable(productServiceClient.getASingleProduct(id)).orElse(null);
+        return Optional.ofNullable(productServiceClient.getASingleProduct(id)).orElseThrow(() -> new ProductNotFoundException(String.format(" - %s", id)));
     }
     
 }
