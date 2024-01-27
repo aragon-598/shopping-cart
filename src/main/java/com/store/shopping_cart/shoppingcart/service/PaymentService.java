@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.store.shopping_cart.shoppingcart.dto.PaymentRequest;
 import com.store.shopping_cart.shoppingcart.dto.PaymentResponse;
 import com.store.shopping_cart.shoppingcart.models.Order;
+import com.store.shopping_cart.shoppingcart.models.PaymentStatus;
+import com.store.shopping_cart.shoppingcart.models.PaymentType;
 
 @Service
 public interface PaymentService {
@@ -17,6 +19,8 @@ public interface PaymentService {
 
     PaymentResponse savePayment(PaymentRequest payment);
 
-    PaymentResponse changePaymentStatus(PaymentRequest payment);
+    PaymentStatus setPaymentStatus(String status);
+
+    PaymentType setPaymentType(String type);
 
 }
