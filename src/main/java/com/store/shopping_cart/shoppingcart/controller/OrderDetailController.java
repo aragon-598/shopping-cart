@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.store.shopping_cart.shoppingcart.dto.OrderDetailDto;
-import com.store.shopping_cart.shoppingcart.models.Order;
+import com.store.shopping_cart.shoppingcart.dto.OrderResponse;
 
 @RequestMapping("/api/v1/order-detail")
 public interface OrderDetailController {
     
     @GetMapping( path = "/by-order", produces = {"application/json"})
-    default ResponseEntity<List<OrderDetailDto>> findOrderDetailByOrder(@RequestBody Order idOrder){
+    default ResponseEntity<List<OrderDetailDto>> findOrderDetailByOrder(@RequestBody OrderResponse idOrder){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
     @GetMapping( path = "/{idOrderDetail}", produces = {"application/json"})
@@ -31,13 +31,13 @@ public interface OrderDetailController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @PutMapping(path = "", produces = {"application/json"})
-    default ResponseEntity<OrderDetailDto> updateOrderDetail(@RequestBody OrderDetailDto orderDetail){
+    @PutMapping(path = "/{idOrderDetail}", produces = {"application/json"})
+    default ResponseEntity<OrderDetailDto> updateOrderDetail( @PathVariable("idOrderDetail") int idOrderDetail, @RequestBody OrderDetailDto orderDetail){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 
-    @DeleteMapping(path = "/{idOrderDetail}", produces = {"application/json"})
+    @DeleteMapping(path = "/{idOrderDetail}")
     default ResponseEntity<String> deletedOrderDetail(@PathVariable int idOrderDetail){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }

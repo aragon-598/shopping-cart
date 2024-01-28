@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.store.shopping_cart.shoppingcart.dto.OrderDetailDto;
+import com.store.shopping_cart.shoppingcart.dto.OrderResponse;
 import com.store.shopping_cart.shoppingcart.dto.ProductResponse;
 import com.store.shopping_cart.shoppingcart.exception.InvalidParameterValueException;
 import com.store.shopping_cart.shoppingcart.exception.ResourceNotFoundException;
 import com.store.shopping_cart.shoppingcart.models.Order;
 import com.store.shopping_cart.shoppingcart.models.OrderDetail;
 import com.store.shopping_cart.shoppingcart.repository.OrderDetailRepository;
+import com.store.shopping_cart.shoppingcart.security.dto.UserResponse;
 import com.store.shopping_cart.shoppingcart.service.OrderDetailService;
 import com.store.shopping_cart.shoppingcart.service.OrderService;
 import com.store.shopping_cart.shoppingcart.service.ProductService;
@@ -40,32 +42,16 @@ public class OrderDetailServiceImp implements OrderDetailService {
     OrderService orderService;
 
     @Override
-    public List<OrderDetailDto> getDetailsByOrder(int idOrder) {
-        log.info("ENTRE AL METODO DE DETAILS BY ORDER ------->",idOrder);
-        System.out.println("ID PARA BUSCAR POR ORDEN {"+idOrder+"} ");
-        List<OrderDetail> detailsList = repository.findByIdOrder(idOrder).orElse(new ArrayList<OrderDetail>());
-        log.info("DESPUES DE IR A LA DB METODO DE DETAILS BY ORDER");
+    public List<OrderDetailDto> getDetailsByOrder(OrderResponse idOrder) {
+        Order orderEntity = modelMapper.map(idOrder, Order.class);
+        List<OrderDetail> detailsList = repository.findByIdOrder(orderEntity).orElse(new ArrayList<OrderDetail>());
 
         List<OrderDetailDto> detailsDtoList = detailsList.stream().map(
                                                                   orderDetail -> {
                                                                     int idProduct = orderDetail.getIdProduct();
                                                                     OrderDetailDto detailDto = modelMapper.map(orderDetail, OrderDetailDto.class);
-                                                                    detailDto.setProductId(getProduct(idProduct));
-                                                                    return detailDto;
-                                                                  }
-                                                                ).collect(Collectors.toList());
-
-        return detailsDtoList;
-    }
-
-    @Override
-    public List<OrderDetailDto> getDetailsByOrder(Order idOrder) {
-        List<OrderDetail> detailsList = repository.findByIdOrder(idOrder).orElse(new ArrayList<OrderDetail>());
-
-        List<OrderDetailDto> detailsDtoList = detailsList.stream().map(
-                                                                  orderDetail -> {
-                                                                    int idProduct = orderDetail.getIdProduct();
-                                                                    OrderDetailDto detailDto = modelMapper.map(orderDetail, OrderDetailDto.class);
+                                                                    UserResponse userResponse = modelMapper.map(orderDetail.getIdOrder().getIdUser(),  UserResponse.class);
+                                                                    detailDto.getIdOrder().setIdUser(userResponse);
                                                                     detailDto.setProductId(getProduct(idProduct));
                                                                     return detailDto;
                                                                   }
@@ -99,10 +85,14 @@ public class OrderDetailServiceImp implements OrderDetailService {
         double amount = quantity * productPrice;
 
         OrderDetail orderDetail = modelMapper.map(orderDetailDto, OrderDetail.class);
+
+        //seteando en la entidad producto, cantidad y total del detalle
         orderDetail.setIdProduct(idProduct);
         orderDetail.setQuantity(quantity);
         orderDetail.setAmount(amount);
         orderDetail.setProductPrice(productPrice);
+
+        //guardando la entidad
         OrderDetail orderDetailSaved = repository.save(orderDetail);
         OrderDetailDto response = modelMapper.map( orderDetailSaved, OrderDetailDto.class);
         
@@ -110,6 +100,11 @@ public class OrderDetailServiceImp implements OrderDetailService {
         List<OrderDetail> detailsList = repository.findByIdOrder(orderDetailSaved.getIdOrder()).orElse(new ArrayList<OrderDetail>());
         orderService.updateOrderTotal( detailsList ,orderDetailSaved.getIdOrder());
 
+        //Seteando user reponse para no mostrar null y el precio del producto no aparezca en 0
+        UserResponse userResponse = orderDetail.getIdOrder().getIdUser() != null 
+                                                ? modelMapper.map(orderDetail.getIdOrder().getIdUser(), UserResponse.class) 
+                                                : null;
+        response.getIdOrder().setIdUser(userResponse);
         response.setProductId(orderDetailDto.getProductId());
 
         return response;
@@ -117,13 +112,15 @@ public class OrderDetailServiceImp implements OrderDetailService {
 
     @Override
     public boolean deleteDetail(int idOrderDetail) {
-        boolean exists = repository.existsById(idOrderDetail);
-
-        if (exists) {
+        log.info("METODO deleteDetail ID-->["+idOrderDetail+"] DE LA CLASE "+getClass().getName());
+        OrderDetail exists = repository.findById(idOrderDetail).orElseThrow(() -> new ResourceNotFoundException(String.format("Not found detail to delete with id - %s", idOrderDetail)));
+        log.info("SE VERIFICO SI EXISTE EL DETALLE EN LA CLASE "+getClass().getName());
+        
+        if (exists != null) {
+            log.info("EL DETALLE SI EXISTE EN LA CLASE "+getClass().getName());
             repository.deleteById(idOrderDetail);
-            Order order = modelMapper.map(orderService.getOrderById(idOrderDetail), Order.class);
-            List<OrderDetail> detailsList = repository.findByIdOrder(order).orElse(new ArrayList<OrderDetail>());
-            orderService.updateOrderTotal( detailsList ,order);
+            List<OrderDetail> detailsList = repository.findByIdOrder(exists.getIdOrder()).orElse(new ArrayList<OrderDetail>());
+            orderService.updateOrderTotal( detailsList ,exists.getIdOrder());
             return true;
         }
 
@@ -134,19 +131,5 @@ public class OrderDetailServiceImp implements OrderDetailService {
     public ProductResponse getProduct(int idProduct) {
         return productService.getASingleProduct(idProduct);
     }
-
-    //TODO: METODO DE ACTUALIZAR
-    /*
-        *IDEAS: 
-        - EN BASE A LA ORDEN DEL DETALLE TRAER UNA LISTA DE DETALLES, 
-          TOMAR EL ORDERDETAIL QUE SEA SIMILAR AL QUE SE ESTA MODIFICANDO
-          Y RESTAR LOS AMOUNT EL RESULTADO YA SEA MAYOR O NEGATIVO SE SUMA
-          AL DE LA ORDEN
-        - TOMAR EN CUENTA QUE EL AMOUNT SE CALCULA EN BASE A LOS QUATINTY
-        - AL MODIFICAR EL QUANTITY DEL DETALLE SE DEBE MODIFICAR EL DE LA ORDEN PADRE
-          UNA IDEA PARA ESTE ES DE FORMA SIMILAR AL AMOUNT, RESTAR AMBOS Y EL RESULTADO SUMARLO AL PADRE
-
-     
-    */
 
 }

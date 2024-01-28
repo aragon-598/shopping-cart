@@ -47,12 +47,18 @@ public class OrderServiceImp implements OrderService {
         System.out.println(orderRequest.toString());
         Order order = modelMapper.map(orderRequest,Order.class);
         order.setStatus(changeOrderStatus(orderRequest.getStatus()));
+        Order orderAux = repository.save(order);
 
         OrderResponse orderResponse = modelMapper.map(
-                                                    repository.save(order), 
+                                                    orderAux,
                                                     OrderResponse.class 
                                                     );
+        UserResponse userResponseAux = orderAux.getIdUser() != null 
+                                                ? modelMapper.map(orderAux.getIdUser(), UserResponse.class) 
+                                                : null;
+
         orderResponse.setIdUser(userResponse);
+        orderResponse.setIdUser(userResponseAux);
         return orderResponse;
     }
 
@@ -76,7 +82,14 @@ public class OrderServiceImp implements OrderService {
 
         List<OrderResponse> orderResponseList = orderList.stream()
                                                             .map(
-                                                                order -> modelMapper.map(order, OrderResponse.class)
+                                                                order -> {
+                                                                    OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
+                                                                    UserResponse userResponseAux = modelMapper.map(order.getIdUser(), UserResponse.class);
+
+                                                                    orderResponse.setIdUser(userResponseAux);
+
+                                                                    return orderResponse;
+                                                                }
                                                             )
                                                             .collect(Collectors.toList());
 

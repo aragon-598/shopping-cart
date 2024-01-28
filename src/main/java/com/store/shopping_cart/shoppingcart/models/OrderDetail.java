@@ -1,5 +1,7 @@
 package com.store.shopping_cart.shoppingcart.models;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +21,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class OrderDetail {
+public class OrderDetail implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

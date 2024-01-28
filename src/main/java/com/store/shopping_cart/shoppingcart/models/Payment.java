@@ -1,5 +1,6 @@
 package com.store.shopping_cart.shoppingcart.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Payment {
+public class Payment implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

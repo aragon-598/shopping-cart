@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.store.shopping_cart.shoppingcart.controller.OrderDetailController;
 import com.store.shopping_cart.shoppingcart.dto.OrderDetailDto;
-import com.store.shopping_cart.shoppingcart.models.Order;
+import com.store.shopping_cart.shoppingcart.dto.OrderResponse;
 import com.store.shopping_cart.shoppingcart.service.OrderDetailService;
 
 @RestController
@@ -33,12 +33,13 @@ public class OrderDetailControllerImp implements OrderDetailController {
     }
 
     @Override
-    public ResponseEntity<List<OrderDetailDto>> findOrderDetailByOrder(Order idOrder) {
+    public ResponseEntity<List<OrderDetailDto>> findOrderDetailByOrder(OrderResponse idOrder) {
         List<OrderDetailDto> response = oDetailService.getDetailsByOrder(idOrder);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @Override
-    public ResponseEntity<OrderDetailDto> updateOrderDetail(OrderDetailDto orderDetail) {
+    public ResponseEntity<OrderDetailDto> updateOrderDetail(int idOrderDetail, OrderDetailDto orderDetail) {
+        orderDetail.setIdOrderDetail(idOrderDetail);
         OrderDetailDto response = oDetailService.saveOrderDetail(orderDetail);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
