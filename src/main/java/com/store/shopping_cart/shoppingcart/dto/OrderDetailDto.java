@@ -11,9 +11,10 @@ import lombok.Setter;
 @Setter
 @Getter
 public class OrderDetailDto {
+    private Integer idOrderDetail;
     private int quantity;
     private double amount;
-    private int idProduct;
+    private ProductResponse productId;
     private double productPrice;
-    private OrderRequest idOrder;
+    private OrderResponse idOrder;
 }

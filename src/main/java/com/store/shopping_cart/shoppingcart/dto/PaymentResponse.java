@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class PaymentResponse {
-
+    private Integer idPayment;
     private OrderResponse idOrder;
     private String paymentType;
     private String status;

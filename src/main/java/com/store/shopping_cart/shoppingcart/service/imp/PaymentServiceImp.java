@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.store.shopping_cart.shoppingcart.dto.PaymentRequest;
 import com.store.shopping_cart.shoppingcart.dto.PaymentResponse;
+import com.store.shopping_cart.shoppingcart.exception.InvalidParameterValueException;
+import com.store.shopping_cart.shoppingcart.exception.ResourceNotFoundException;
 import com.store.shopping_cart.shoppingcart.models.Order;
 import com.store.shopping_cart.shoppingcart.models.Payment;
 import com.store.shopping_cart.shoppingcart.models.PaymentStatus;
@@ -26,30 +28,45 @@ public class PaymentServiceImp implements PaymentService {
 
     @Override
     public PaymentResponse getPaymentById(int idPayment) {
-        PaymentResponse payment = modelMapper.map(paymentRepository.findById(idPayment).orElse(null), PaymentResponse.class);
-        return payment;
+        Payment payment = paymentRepository.findById(idPayment).orElseThrow(() -> new ResourceNotFoundException(String.format(" Payment not exists - %s", idPayment)));
+        PaymentResponse paymentResponse = modelMapper.map(payment, PaymentResponse.class);
+        return paymentResponse;
     }
 
     @Override
     public PaymentResponse getPaymentByOrder(int idOrder) {
-        PaymentResponse payment = modelMapper.map(paymentRepository.findByIdOrder(idOrder).orElse(null), PaymentResponse.class);
+        Payment payment = paymentRepository.findByIdOrder(idOrder).orElseThrow(() -> new ResourceNotFoundException(String.format(" Payment not exists to order with id - %s",idOrder)));
+        PaymentResponse paymentResponse = modelMapper.map(payment, PaymentResponse.class);
 
-        return payment;
+        return paymentResponse;
     }
 
     @Override
     public PaymentResponse getPaymentByOrder(Order idOrder) {
-        PaymentResponse payment = modelMapper.map(paymentRepository.findByIdOrder(idOrder).orElse(null), PaymentResponse.class);
-        return payment;
+        if (idOrder == null) {
+            throw new InvalidParameterValueException(String.format("Invalid value. Null is not valid value - %s", idOrder));
+        }
+        
+        Payment payment = paymentRepository.findByIdOrder(idOrder).orElseThrow(() -> new ResourceNotFoundException(String.format(" Payment not exists to order with id - %s",idOrder)));
+        PaymentResponse paymentResponse = modelMapper.map(payment, PaymentResponse.class);
+        return paymentResponse;
     }
 
     @Override
-    public PaymentResponse savePayment(PaymentRequest payment) {
-        Payment newPayment = modelMapper.map(payment, Payment.class);
-        newPayment.setPaymentType(setPaymentType(payment.getPaymentType()));
-        newPayment.setStatus(setPaymentStatus(payment.getStatus()));
+    public PaymentResponse savePayment(PaymentRequest paymentRequest) {
+
+        if (paymentRequest == null) {
+            throw new InvalidParameterValueException(String.format("Invalid value. Null is not valid value - %s", paymentRequest));
+        }
+
+        Payment payment = modelMapper.map(paymentRequest, Payment.class);
+        payment.setPaymentType(setPaymentType(paymentRequest.getPaymentType()));
+        payment.setStatus(setPaymentStatus(paymentRequest.getStatus()));
+        if (payment.getStatus().name().equals("")) {
+            
+        }
         
-        PaymentResponse paymentResponse = modelMapper.map(paymentRepository.save(newPayment), PaymentResponse.class);
+        PaymentResponse paymentResponse = modelMapper.map(paymentRepository.save(payment), PaymentResponse.class);
 
         return paymentResponse;
     }

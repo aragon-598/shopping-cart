@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class PaymentRequest {
-    
+    private Integer idPayment;
     private OrderRequest idOrder;
     private String paymentType;
     private String status;

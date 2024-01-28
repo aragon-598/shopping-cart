@@ -31,7 +31,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPayment;
     @OneToOne
-    @JoinColumn(name = "id_order", unique = true)
+    @JoinColumn(name = "id_order")
     private Order idOrder;
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;

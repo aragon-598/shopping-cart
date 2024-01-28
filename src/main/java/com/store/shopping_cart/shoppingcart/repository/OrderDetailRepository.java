@@ -15,6 +15,6 @@ import com.store.shopping_cart.shoppingcart.models.OrderDetail;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer> {
     Optional<List<OrderDetail>> findByIdOrder(Order idOrder);
     
-    @Query( value = "select od from order_detail od where od.id_order = :idOrder", nativeQuery = true )
+    @Query( value = "select * from order_detail od where od.id_order = :idOrder", nativeQuery = true )
     Optional<List<OrderDetail>> findByIdOrder(@Param("idOrder") int idOrder);
 }

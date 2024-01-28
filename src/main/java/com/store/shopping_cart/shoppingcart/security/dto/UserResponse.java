@@ -17,9 +17,20 @@ import lombok.Setter;
 @Getter
 @RequiredArgsConstructor
 public class UserResponse {
+    private Integer userId;
     private String name;
     private String email;
     private String username;
     private boolean active;
     private Set<Role> roles = new HashSet<>();
+    
+    public UserResponse(String name, String email, String username, boolean active, Set<Role> roles) {
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.active = active;
+        this.roles = roles;
+    }
+
+    
 }

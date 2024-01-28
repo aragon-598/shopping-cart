@@ -1,6 +1,5 @@
 package com.store.shopping_cart.shoppingcart.dto;
 
-import java.math.BigDecimal;
 
 import org.springframework.hateoas.RepresentationModel;
 
@@ -18,7 +17,7 @@ import lombok.Setter;
 public class ProductResponse extends RepresentationModel<ProductResponse>  {
 
     @JsonProperty("id")
-    private String productId;
+    private Integer productId;
 
     @JsonProperty("title")
     private String name;
@@ -30,6 +29,6 @@ public class ProductResponse extends RepresentationModel<ProductResponse>  {
     private String imageUrl;
 
     @JsonProperty("price")
-    private BigDecimal price = null;
+    private double price = 0;
     
 }

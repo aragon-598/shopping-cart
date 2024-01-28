@@ -1,6 +1,7 @@
 package com.store.shopping_cart.shoppingcart.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,8 +28,8 @@ public class OrderDetail {
     private double amount;
     private int idProduct;
     private double productPrice;
-    @ManyToOne
-    @JoinColumn(name = "id_order")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_order", referencedColumnName = "idOrder", nullable = false)
     private Order idOrder;
 
 }

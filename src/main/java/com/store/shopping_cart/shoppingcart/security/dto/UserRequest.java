@@ -13,6 +13,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserRequest {
+    private Integer userId;
     private String name;
     private String email;
     private String username;
