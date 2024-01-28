@@ -102,6 +102,7 @@ public class OrderDetailServiceImp implements OrderDetailService {
         orderDetail.setIdProduct(idProduct);
         orderDetail.setQuantity(quantity);
         orderDetail.setAmount(amount);
+        orderDetail.setProductPrice(productPrice);
         OrderDetail orderDetailSaved = repository.save(orderDetail);
         OrderDetailDto response = modelMapper.map( orderDetailSaved, OrderDetailDto.class);
         
