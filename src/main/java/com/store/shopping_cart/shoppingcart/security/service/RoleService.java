@@ -7,5 +7,11 @@ import com.store.shopping_cart.shoppingcart.security.models.RoleName;
 
 @Service
 public interface RoleService {
+
+    /**
+     * Get role by name
+     * @param roleName
+     * @return
+     */
     Role findRoleByName(RoleName roleName);
 }

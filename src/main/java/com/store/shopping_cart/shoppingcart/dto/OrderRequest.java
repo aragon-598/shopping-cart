@@ -32,11 +32,11 @@ public class OrderRequest {
     @Schema(name = "status",required = true,example = "in progress",defaultValue = "in progress",description = "this key indicates the status of the order")
     @NotBlank
     private String status;
-    @Schema(name = "idUser",required = true,example = "1",defaultValue = "2",description = "this key indicates the user")
+    @Schema(name = "idUser", example = "{\"userId\":1,\"name\":\"MauricioSanchez\",\"email\":\"mauricio.sanchez@gmail.com\",\"username\":\"msanchez\",\"active\":true,\"roles\":[{\"roleId\":3,\"roleName\":\"CLIENT_ROLE\"}]}" , required = true,description = "this key indicates the user")
     @NotNull
     private UserResponse idUser;
 
-    @Schema(name = "idPayment",required = true,example = "",defaultValue = "",description = "this key indicates payment")
+    @Schema(name = "idPayment",required = true,example = "\"{\\\"idPayment\\\":3,\\\"paymentType\\\":\\\"DEBIT_CARD\\\",\\\"status\\\":\\\"PENDING\\\",\\\"creatDate\\\":\\\"2024-01-29T17:04:45.566+00:00\\\",\\\"updateDate\\\":\\\"2024-01-29T17:04:45.566+00:00\\\"}\"",description = "this key indicates payment")
     @Nullable
     @JsonManagedReference
     private PaymentResponse idPayment;

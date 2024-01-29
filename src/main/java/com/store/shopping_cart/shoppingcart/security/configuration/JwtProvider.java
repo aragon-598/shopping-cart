@@ -28,11 +28,15 @@ public class JwtProvider {
     @Value("${jwt.secret}")
     private String secret;
 
-    // private final byte[] secret.getBytes() = Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded();
 
     @Value("${jwt.expiration}")
     private int exp;
     
+    /**
+     * Generate jwt to authentication
+     * @param authentication
+     * @return
+     */
     public String generateToken(Authentication authentication) {
         UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
         List<String>  roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
@@ -48,6 +52,11 @@ public class JwtProvider {
         return Jwts.parserBuilder().setSigningKey(secret.getBytes()).build().parseClaimsJws(token).getBody().getSubject();
     }
 
+    /**
+     * chekc if token if valid, expired
+     * @param token
+     * @return
+     */
     public boolean validateToken(String token) {
 
         try {
@@ -68,21 +77,21 @@ public class JwtProvider {
         catch (IllegalArgumentException e) {
             log.error("Token vacío", e);
         }
-        // catch(SignatureException e){
-        //     log.error("Fail en la firma", e);
-        // }
 
         return false;
     }
 
+    /**
+     * Refresh token
+     * @param token
+     * @return
+     * @throws ParseException
+     */
     public String refreshToken(String token) throws ParseException {
             try {
                 
-                // Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token);
                 Jwts.parserBuilder().setSigningKey(secret.getBytes()).build().parseClaimsJws(token);
             } catch (ExpiredJwtException e) {
-                // JWT jwt = JwtParser.parse(token);
-                // JWTClaimsSet claims =  jwt.getJWTClaimsSet();
                 Claims claims = Jwts.parserBuilder()
                                     .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
                                     .build()

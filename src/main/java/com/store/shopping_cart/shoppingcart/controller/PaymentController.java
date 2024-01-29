@@ -17,16 +17,34 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/payments")
 public interface PaymentController {
 
-        @GetMapping( path = "/by-order", produces = {"application/json"})
+    /**
+     * get payment by order
+     * @param idOrder
+     * @param result
+     * @return
+     */
+    @GetMapping( path = "/by-order", produces = {"application/json"})
     default ResponseEntity<?> findPaymentByOrder(  @Valid @RequestBody OrderResponse idOrder, BindingResult result){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * create payment of order
+     * @param paymentRequest
+     * @param result
+     * @return
+     */
     @PostMapping(produces = {"application/json"})
     default ResponseEntity<?> createPayment(@Valid @RequestBody PaymentRequest paymentRequest, BindingResult result){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * update payment
+     * @param paymentRequest
+     * @param result
+     * @return
+     */
     @PutMapping(produces = {"application/json"})
     default ResponseEntity<?> updatePayment(@Valid @RequestBody PaymentRequest paymentRequest, BindingResult result){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

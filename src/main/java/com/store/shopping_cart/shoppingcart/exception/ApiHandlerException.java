@@ -39,14 +39,20 @@ public class ApiHandlerException {
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<StandarizedApiExceptionResponse> handleProductNotFoundException(ProductNotFoundException ex){
-        StandarizedApiExceptionResponse response = new StandarizedApiExceptionResponse("Error, recurso no encontrado","Error-SPMC0005",ex.getMessage());
+        StandarizedApiExceptionResponse response = new StandarizedApiExceptionResponse("Error, producto no encontrado","Error-SPMC0005",ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(InvalidParameterValueException.class)
     public ResponseEntity<StandarizedApiExceptionResponse> handleInvalidParameterValueException(InvalidParameterValueException ex){
-        StandarizedApiExceptionResponse response = new StandarizedApiExceptionResponse("Error, recurso no encontrado","Error-SPMC0006",ex.getMessage());
+        StandarizedApiExceptionResponse response = new StandarizedApiExceptionResponse("Error, parametro invalido  null","Error-SPMC0006",ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<StandarizedApiExceptionResponse> handleGenericException(Exception ex){
+        StandarizedApiExceptionResponse response = new StandarizedApiExceptionResponse("Error","Error-SPMC0007",ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     // @ExceptionHandler(WebClientResponseException.class)

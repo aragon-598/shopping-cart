@@ -12,10 +12,26 @@ import com.store.shopping_cart.shoppingcart.security.models.Role;
 
 @Service
 public interface AuthService {
+
+    /**
+     * authenticates user by credentails a return user details & token
+     * @param loginRequest
+     * @return
+     */
     LoginResponse login(LoginRequest loginRequest);
 
+    /**
+     * ccreate a new user
+     * @param user
+     * @return
+     */
     UserResponse register(UserRequest user);
 
+    /**
+     * map roles from string to RolName
+     * @param roleList
+     * @return
+     */
     Set<Role> setRoles(Set<String> roleList);
 }
 

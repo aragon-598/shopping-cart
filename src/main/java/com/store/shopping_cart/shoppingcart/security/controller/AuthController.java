@@ -20,6 +20,12 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 public interface AuthController {
     
+    /**
+     * authenticates the user by means of credentials
+     * @param login
+     * @param result
+     * @return
+     */
     @Operation(description = "login user")
     @ApiResponses(value = {@ApiResponse(responseCode="201",description="Succeded")})
     @PostMapping("/login")
@@ -27,6 +33,12 @@ public interface AuthController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
     
+    /**
+     * create new client user
+     * @param user
+     * @param result
+     * @return
+     */
     @Operation(description = "Save user information", summary = "Return 201 if data is good")
     @ApiResponses(value = {@ApiResponse(responseCode="201",description="Succeded")})
     @PostMapping("/register")
