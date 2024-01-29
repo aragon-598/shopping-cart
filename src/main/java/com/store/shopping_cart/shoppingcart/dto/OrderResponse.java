@@ -2,9 +2,11 @@ package com.store.shopping_cart.shoppingcart.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.store.shopping_cart.shoppingcart.security.dto.UserResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -29,4 +31,8 @@ public class OrderResponse {
     private Date creatDate;
     @Schema(name = "updateDate",required = true,example = "",defaultValue = "",description = "this key indicates user update date")
     private Date updateDate;
+    @Schema(name = "idPayment",required = true,example = "",defaultValue = "",description = "this key indicates payment")
+    @Nullable
+    @JsonManagedReference
+    private PaymentResponse idPayment;
 }

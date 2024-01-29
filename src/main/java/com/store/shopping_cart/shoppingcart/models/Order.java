@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.store.shopping_cart.shoppingcart.security.models.User;
 
 import jakarta.persistence.CascadeType;
@@ -43,7 +44,9 @@ public class Order implements Serializable {
     private int totalItems;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-    @OneToOne(mappedBy = "idOrder", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToOne(mappedBy = "idOrder", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Payment idPayment;
     @CreationTimestamp
     private Date creatDate;

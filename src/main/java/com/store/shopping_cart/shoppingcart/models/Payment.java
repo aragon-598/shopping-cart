@@ -6,6 +6,8 @@ import java.util.Date;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,9 +33,12 @@ public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idPayment;
+    
     @OneToOne
     @JoinColumn(name = "id_order")
+    @JsonBackReference
     private Order idOrder;
+    
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
     @Enumerated(EnumType.STRING)

@@ -1,5 +1,7 @@
 package com.store.shopping_cart.shoppingcart.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +19,7 @@ public class PaymentRequest {
     private Integer idPayment;
     @Schema(name = "idOrder",required = true,example = "1",defaultValue = "2",description = "this key is to indicate the id order")
     @NotNull
+    @JsonBackReference
     private OrderResponse idOrder;
     @Schema(name = "paymentType",required = true,example = "cash",defaultValue = "cash",description = "this key is to indicate the payment type")
     @NotBlank

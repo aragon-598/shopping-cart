@@ -1,9 +1,11 @@
 package com.store.shopping_cart.shoppingcart.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.store.shopping_cart.shoppingcart.security.dto.UserResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,4 +35,9 @@ public class OrderRequest {
     @Schema(name = "idUser",required = true,example = "1",defaultValue = "2",description = "this key indicates the user")
     @NotNull
     private UserResponse idUser;
+
+    @Schema(name = "idPayment",required = true,example = "",defaultValue = "",description = "this key indicates payment")
+    @Nullable
+    @JsonManagedReference
+    private PaymentResponse idPayment;
 }
