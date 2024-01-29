@@ -3,6 +3,7 @@ package com.store.shopping_cart.shoppingcart.controller.imp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.store.shopping_cart.shoppingcart.controller.PaymentController;
@@ -18,19 +19,25 @@ public class PaymentControllerImp  implements PaymentController{
     private PaymentService paymentService;
 
     @Override
-    public ResponseEntity<PaymentResponse> createPayment(PaymentRequest paymentRequest) {
+    public ResponseEntity<?> createPayment(PaymentRequest paymentRequest, BindingResult result) {
+        if (result.hasErrors()) 
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en los campos");
         PaymentResponse response = paymentService.savePayment(paymentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
-    public ResponseEntity<PaymentResponse> findPaymentByOrder(OrderResponse idOrder) {
+    public ResponseEntity<?> findPaymentByOrder(OrderResponse idOrder, BindingResult result) {
+        if (result.hasErrors()) 
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en los campos");
         PaymentResponse response = paymentService.getPaymentByOrder(idOrder);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
-    public ResponseEntity<PaymentResponse> updatePayment(PaymentRequest paymentRequest) {
+    public ResponseEntity<?> updatePayment(PaymentRequest paymentRequest, BindingResult result) {
+        if (result.hasErrors()) 
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en los campos");
         PaymentResponse response = paymentService.savePayment(paymentRequest);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
