@@ -100,8 +100,8 @@ public class OrderServiceImp implements OrderService {
     public OrderStatus changeOrderStatus(String orderStatus) {
         OrderStatus newStatus =  null;
 
-        switch (orderStatus) {
-            case "in progress":
+        switch (orderStatus.toLowerCase()) {
+            case "in_progress":
                 newStatus= OrderStatus.IN_PROGRESS;
                 break;
             case "completed":
