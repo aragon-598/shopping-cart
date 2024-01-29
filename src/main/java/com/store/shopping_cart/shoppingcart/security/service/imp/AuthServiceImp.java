@@ -102,12 +102,18 @@ public class AuthServiceImp implements AuthService {
     @Override
     public Set<Role> setRoles(Set<String> roleList){
         Set<Role> roles = new HashSet<>();
-        roles.add(roleService.findRoleByName(RoleName.USER_ROLE));
         
         if (roleList.contains("admin")) {
             roles.add(roleService.findRoleByName(RoleName.ADMIN_ROLE));
+
+            return roles;
+        } else if( roleList.contains("user")){
+            roles.add(roleService.findRoleByName(RoleName.USER_ROLE));
+            return roles;
         }
 
+        roles.add(roleService.findRoleByName(RoleName.CLIENT_ROLE));
+        
         return roles;
     }
     
