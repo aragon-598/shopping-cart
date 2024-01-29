@@ -23,7 +23,10 @@ public class SecurityConfiguration {
     @Autowired
     JwtEntryPoint entryPoint;
     
-    public final String[] PUBLIC_URL = {"/auth/login","/auth/register"};
+    public final String[] PUBLIC_URL = {"/auth/login","/auth/register", "/v3/api-docs.yaml",
+                                                                        "/v3/api-docs/**",
+                                                                        "/swagger-ui/**",
+                                                                        "/swagger-ui.html"};
 
     // public final String[] ADMIN_URL_ACCESS = {"",""};
 

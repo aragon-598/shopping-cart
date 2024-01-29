@@ -133,4 +133,37 @@ public class OrderServiceImp implements OrderService {
         repository.save(order);
     }
 
+    @Override
+    public OrderResponse setOrderStatusByPayment(String paymentStatus, int idOrder) {
+        //PENDING, COMPLETED, DECLINED, CANCELED, REFUND;
+        OrderStatus newStatus = null;
+        paymentStatus = paymentStatus.toLowerCase();
+        switch (paymentStatus) {
+            case "pending":
+                newStatus= OrderStatus.OUTSTANDING;
+                break;
+            case "completed":
+                newStatus= OrderStatus.COMPLETED;
+                break;
+            case "declined":
+                newStatus= OrderStatus.OUTSTANDING;
+                break;
+            case "canceled":
+                newStatus= OrderStatus.CANCELED;
+                break;
+            case "refund":
+                newStatus= OrderStatus.OUTSTANDING;
+                break;
+        }
+
+        Order orderEntity = repository.findById(idOrder).orElseThrow();
+        orderEntity.setStatus(newStatus);
+        OrderResponse orderResponse =  modelMapper.map(orderEntity, OrderResponse.class);
+        UserResponse userResponse = modelMapper.map(orderEntity.getIdUser(), UserResponse.class);
+
+        orderResponse.setIdUser(userResponse);
+
+        return orderResponse;
+    }
+
 }

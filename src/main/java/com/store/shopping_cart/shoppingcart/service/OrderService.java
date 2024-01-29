@@ -19,5 +19,6 @@ public interface OrderService {
     List<OrderResponse> getOrderByUsuario(UserResponse userResponse);
     OrderStatus changeOrderStatus(String orderStatus);
     void updateOrderTotal(List<OrderDetail> detailsList, Order order);
+    public OrderResponse setOrderStatusByPayment(String paymentStatus, int idOrder);
 
 }

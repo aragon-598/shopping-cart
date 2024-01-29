@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.store.shopping_cart.shoppingcart.controller.PaymentController;
+import com.store.shopping_cart.shoppingcart.dto.OrderResponse;
 import com.store.shopping_cart.shoppingcart.dto.PaymentRequest;
 import com.store.shopping_cart.shoppingcart.dto.PaymentResponse;
 import com.store.shopping_cart.shoppingcart.service.PaymentService;
@@ -23,7 +24,7 @@ public class PaymentControllerImp  implements PaymentController{
     }
 
     @Override
-    public ResponseEntity<PaymentResponse> findPaymentByOrder(int idOrder) {
+    public ResponseEntity<PaymentResponse> findPaymentByOrder(OrderResponse idOrder) {
         PaymentResponse response = paymentService.getPaymentByOrder(idOrder);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
