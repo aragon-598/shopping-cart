@@ -11,6 +11,12 @@ import com.store.shopping_cart.shoppingcart.models.OrderDetail;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer> {
+
+    /**
+     * get order detail by order parent
+     * @param idOrder
+     * @return
+     */
     Optional<List<OrderDetail>> findByIdOrder(Order idOrder);
 
 }

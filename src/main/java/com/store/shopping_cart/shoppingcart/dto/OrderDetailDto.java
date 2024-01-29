@@ -28,7 +28,7 @@ public class OrderDetailDto {
     @Schema(name = "productPrice",required = true,example = "14.15",defaultValue = "10.0",description = "this key is to indicate the product price")
     @Min(0)
     private double productPrice;
-    @Schema(name = "idOrder",required = true,example = "1",defaultValue = "2",description = "this key is to indicate the id order")
+    @Schema(name = "idOrder",required = true,example = "" ,defaultValue = "2",description = "this key is to indicate the id order")
     @NotNull
     private OrderResponse idOrder;
 }

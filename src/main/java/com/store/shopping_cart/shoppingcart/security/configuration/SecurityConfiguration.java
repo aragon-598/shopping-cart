@@ -17,25 +17,21 @@ public class SecurityConfiguration {
     @Autowired
     private JwtTokenFilter jwtTokenFilter;
 
-    // @Autowired
-    // private JwtProvider jwtProvider;
-
     @Autowired
     JwtEntryPoint entryPoint;
     
-    public final String[] PUBLIC_URL = {"/auth/login","/auth/register", "/v3/api-docs.yaml",
+    /**
+     * public urls without requiring authentication
+     */
+    public final String[] PUBLIC_URL = {"/auth/**", "/v3/api-docs.yaml",
                                                                         "/v3/api-docs/**",
                                                                         "/swagger-ui/**",
                                                                         "/swagger-ui.html"};
 
-    // public final String[] ADMIN_URL_ACCESS = {"",""};
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-            // .authorizeHttpRequests(req -> {
-            //     req.requestMatchers("/home/index").hasAuthority(RoleName.ADMIN_ROLE.name());
-            // })
+
             .authorizeHttpRequests(requests -> {
                 requests.requestMatchers(PUBLIC_URL).permitAll().anyRequest().authenticated();
             })
@@ -43,7 +39,6 @@ public class SecurityConfiguration {
             .sessionManagement(management -> {
                 management.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             })
-            // .authenticationProvider(jwtProvider)
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

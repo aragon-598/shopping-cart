@@ -23,6 +23,13 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/orders")
 public interface OrderController {
     
+    /**
+     * Get all orders by user
+     * @param user
+     * @param result
+     * @return 
+     * 
+     */
     @Operation(description = "Return all orders by user")
     @ApiResponses(value = {@ApiResponse(responseCode="200",description="Success")})
     @GetMapping(produces = {"application/json"})
@@ -30,6 +37,12 @@ public interface OrderController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * create a new order
+     * @param order
+     * @param result
+     * @return
+     */
     @Operation(description = "Save order information", summary = "Return 201 if data is good")
     @ApiResponses(value = {@ApiResponse(responseCode="201",description="Succeded")})
     @PostMapping(produces = {"application/json"})
@@ -37,6 +50,12 @@ public interface OrderController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * update order 
+     * @param order
+     * @param result
+     * @return
+     */
     @Operation(description = "Update order information", summary = "Return 404 if the order not exists")
     @ApiResponses(value = {@ApiResponse(responseCode="200",description="successful")})
     @PutMapping(produces = {"application/json"})

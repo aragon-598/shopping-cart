@@ -9,5 +9,11 @@ import com.store.shopping_cart.shoppingcart.security.models.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
+
+    /**
+     * Get user by username
+     * @param username
+     * @return
+     */
     Optional<User> findByUsername(String username);
 }

@@ -26,6 +26,12 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/order-detail")
 public interface OrderDetailController {
     
+     /**
+     * create a new detail of order
+     * @param idOrder
+     * @param result
+     * @return
+     */
     @Operation(description = "Return order details by order", summary = "Return 404 if no data found")
     @ApiResponses(value = {@ApiResponse(responseCode="200",description="successful")})
     @GetMapping( path = "/by-order", produces = {"application/json"})
@@ -33,6 +39,11 @@ public interface OrderDetailController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * get order detail by id
+     * @param idOrderDetail
+     * @return
+     */
     @Operation(description = "Return order details by id", summary = "Return 404 if no data found")
     @ApiResponses(value = {@ApiResponse(responseCode="200",description="successful")})    
     @GetMapping( path = "/{idOrderDetail}", produces = {"application/json"})
@@ -40,6 +51,12 @@ public interface OrderDetailController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * create a new order detail
+     * @param orderDetail
+     * @param result
+     * @return
+     */
     @Operation(description = "Save orderDetail information", summary = "Return 201 if data is good")
     @ApiResponses(value = {@ApiResponse(responseCode="201",description="Succeded")})
    @PostMapping(path = "", produces = {"application/json"})
@@ -47,6 +64,13 @@ public interface OrderDetailController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * update order detail
+     * @param idOrderDetail
+     * @param orderDetail
+     * @param result
+     * @return
+     */
     @Operation(description = "Update order detail information looking for id", summary = "Return 404 if the orde detail not exists")
     @ApiResponses(value = {@ApiResponse(responseCode="200",description="successful")})
     @PutMapping(path = "/{idOrderDetail}", produces = {"application/json"})
@@ -54,7 +78,11 @@ public interface OrderDetailController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-
+    /**
+     * delete order detail
+     * @param idOrderDetail
+     * @return
+     */
     @DeleteMapping(path = "/{idOrderDetail}")
     default ResponseEntity<?> deletedOrderDetail(@PathVariable int idOrderDetail){
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

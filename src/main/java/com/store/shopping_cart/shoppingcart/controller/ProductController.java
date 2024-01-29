@@ -18,6 +18,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/v1/products")
 public interface ProductController {
     
+    /**
+     * get all products
+     * @return
+     */
     @Operation(description = "Return all products")
     @ApiResponses(value = {@ApiResponse(responseCode="200",description="Success")})
     @GetMapping(produces = { "application/json" })
@@ -25,6 +29,11 @@ public interface ProductController {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    /**
+     * get product by id
+     * @param id
+     * @return
+     */
     @Operation(description = "Return product by ID", summary = "Return 404 if no data found")
     @ApiResponses(value = {@ApiResponse(responseCode="200",description="successful")})
     @GetMapping(path = "/{id}", produces = { "application/json" })
