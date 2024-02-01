@@ -2,7 +2,6 @@ package com.store.shopping_cart.shoppingcart.dto;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.store.shopping_cart.shoppingcart.security.dto.UserResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,6 +32,5 @@ public class OrderResponse {
     private Date updateDate;
     @Schema(name = "idPayment",required = true,example = "",defaultValue = "",description = "this key indicates payment")
     @Nullable
-    @JsonManagedReference
     private PaymentResponse idPayment;
 }

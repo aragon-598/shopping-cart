@@ -1,7 +1,6 @@
 package com.store.shopping_cart.shoppingcart.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.store.shopping_cart.shoppingcart.security.dto.UserResponse;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,6 +37,5 @@ public class OrderRequest {
 
     @Schema(name = "idPayment",required = true,example = "\"{\\\"idPayment\\\":3,\\\"paymentType\\\":\\\"DEBIT_CARD\\\",\\\"status\\\":\\\"PENDING\\\",\\\"creatDate\\\":\\\"2024-01-29T17:04:45.566+00:00\\\",\\\"updateDate\\\":\\\"2024-01-29T17:04:45.566+00:00\\\"}\"",description = "this key indicates payment")
     @Nullable
-    @JsonManagedReference
     private PaymentResponse idPayment;
 }
