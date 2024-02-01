@@ -2,8 +2,10 @@ package com.store.shopping_cart.shoppingcart.dto;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +22,15 @@ public class OrderDetailDto {
     @Min(1)
     private int quantity;
     @Schema(name = "amount",required = false,example = "1",defaultValue = "0",description = "this key is to indicate the amount of detail")
-    @Min(0)
+    @PositiveOrZero
     private double amount;
     @Schema(name = "productId",required = true,example = "1",defaultValue = "2",description = "this key is to indicate the id of product")
     @NotNull
+    @Valid
     private ProductResponse productId;
     @Schema(name = "productPrice",required = true,example = "14.15",defaultValue = "10.0",description = "this key is to indicate the product price")
     @Min(0)
+    @PositiveOrZero
     private double productPrice;
     @Schema(name = "idOrder",required = true,example = "" ,defaultValue = "2",description = "this key is to indicate the id order")
     @NotNull

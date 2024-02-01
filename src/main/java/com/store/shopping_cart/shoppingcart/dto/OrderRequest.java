@@ -8,6 +8,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class OrderRequest {
     @Min(0)
     private double totalAmount;
     @Schema(name = "totalAmount",required = false,example = "1",defaultValue = "2",description = "this key is to indicate, total items of order")
-    @Min(1)
+    @PositiveOrZero
     private int totalItems;
     @Schema(name = "status",required = true,example = "in progress",defaultValue = "in progress",description = "this key indicates the status of the order")
     @NotBlank

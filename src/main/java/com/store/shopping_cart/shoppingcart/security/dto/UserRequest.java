@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class UserRequest {
 
     @Schema(name = "email",required = true,example = "user email",defaultValue = "user email",description = "This key indicates the user email")
     @NotBlank
+    @Email
     private String email;
 
     @Schema(name = "username",required = true,example = "username",defaultValue = "username",description = "This key indicates the username")
@@ -36,7 +38,6 @@ public class UserRequest {
     private String password;
 
     @Schema(name = "active",required = true,example = "true",defaultValue = "true",description = "this key indicates whether the user is active")
-    @NotNull
     private boolean active;
     
     @Schema(name = "roles",required = true,example = "roles",defaultValue = "roles",description = "this key indicates the user roles")

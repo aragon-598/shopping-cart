@@ -3,6 +3,7 @@ package com.store.shopping_cart.shoppingcart.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,6 +15,7 @@ import com.store.shopping_cart.shoppingcart.dto.PaymentRequest;
 
 import jakarta.validation.Valid;
 
+@Validated
 @RequestMapping("/api/v1/payments")
 public interface PaymentController {
 
