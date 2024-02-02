@@ -5,12 +5,12 @@ import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.store.shopping_cart.shoppingcart.common.StandarizedApiExceptionResponse;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ApiHandlerException {
     
     @ExceptionHandler(NoSuchElementException.class)

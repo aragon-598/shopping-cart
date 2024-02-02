@@ -1,12 +1,16 @@
 package com.store.shopping_cart.shoppingcart.security.controller;
 
+import java.text.ParseException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.store.shopping_cart.shoppingcart.security.dto.AuthResponse;
 import com.store.shopping_cart.shoppingcart.security.dto.LoginRequest;
 import com.store.shopping_cart.shoppingcart.security.dto.UserRequest;
 
@@ -45,5 +49,13 @@ public interface AuthController {
     default ResponseEntity<?> register(@Valid @RequestBody UserRequest user, BindingResult result) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
+
+    @Operation(description = "refresh user token")
+    @ApiResponses(value = {@ApiResponse(responseCode="201",description="Succeded")})
+    @GetMapping("/refresh")
+    default ResponseEntity<?> refreshToken(@Valid @RequestBody AuthResponse authResponse, BindingResult result) throws ParseException {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
 
 }

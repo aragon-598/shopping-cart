@@ -1,5 +1,6 @@
 package com.store.shopping_cart.shoppingcart.security.service.imp;
 
+import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.store.shopping_cart.shoppingcart.security.configuration.JwtProvider;
 import com.store.shopping_cart.shoppingcart.security.dto.LoginRequest;
-import com.store.shopping_cart.shoppingcart.security.dto.LoginResponse;
+import com.store.shopping_cart.shoppingcart.security.dto.AuthResponse;
 import com.store.shopping_cart.shoppingcart.security.dto.UserRequest;
 import com.store.shopping_cart.shoppingcart.security.dto.UserResponse;
 import com.store.shopping_cart.shoppingcart.security.models.Role;
@@ -53,7 +54,7 @@ public class AuthServiceImp implements AuthService {
     JwtProvider jwtProvider;
 
     @Override
-    public LoginResponse login(LoginRequest loginRequest) {
+    public AuthResponse login(LoginRequest loginRequest) {
 
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
@@ -69,7 +70,7 @@ public class AuthServiceImp implements AuthService {
         UserResponse userResponse = modelMapper.map(user, UserResponse.class);
 
 
-        return new LoginResponse(userResponse, jwt);
+        return new AuthResponse(userResponse, jwt);
 
         
     }
@@ -117,5 +118,12 @@ public class AuthServiceImp implements AuthService {
         return roles;
     }
     
+    @Override
+    public AuthResponse refreshToken(AuthResponse authResponse) throws ParseException{
+
+        String refreshToken = jwtProvider.refreshToken(authResponse.getToken());
+        authResponse.setToken(refreshToken);
+        return authResponse;
+    }
 
 }

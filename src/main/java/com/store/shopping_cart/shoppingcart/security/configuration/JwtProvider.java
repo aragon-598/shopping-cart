@@ -1,5 +1,6 @@
 package com.store.shopping_cart.shoppingcart.security.configuration;
 
+import java.security.Key;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -10,15 +11,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.JWTParser;
 import com.store.shopping_cart.shoppingcart.security.models.UserDetailsImp;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -43,13 +47,14 @@ public class JwtProvider {
         return Jwts.builder()
                     .setSubject(userDetails.getUsername())
                     .claim("roles", roles)
-                    .setExpiration(new Date(new Date().getTime()+exp*180))
-                    .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(new Date().getTime()+exp*5))
+                    .signWith((getSecret(secret)), SignatureAlgorithm.HS256)
                     .compact();
     }
 
     public String getUsernameFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(secret.getBytes()).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(getSecret(secret)).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     /**
@@ -61,23 +66,15 @@ public class JwtProvider {
 
         try {
 
-            Jwts.parserBuilder().setSigningKey(secret.getBytes()).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(getSecret(secret)).build().parseClaimsJws(token);
 
             return true;
             
-        } catch (MalformedJwtException e) {
-            log.error("Token mal formado", e);
-        }
-        catch (UnsupportedJwtException e) {
-            log.error("Token no soportado", e);
-        }
-        catch (ExpiredJwtException e) {
-            log.error("Token expirado", e);
-        }
-        catch (IllegalArgumentException e) {
-            log.error("Token vacío", e);
-        }
-
+        } catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException ex) {
+			log.error("INVALID_CREDENTIALS", ex);
+		} catch (ExpiredJwtException ex) {
+			log.error("EXPIRED TOKEN", ex);
+		}
         return false;
     }
 
@@ -90,27 +87,30 @@ public class JwtProvider {
     public String refreshToken(String token) throws ParseException {
             try {
                 
-                Jwts.parserBuilder().setSigningKey(secret.getBytes()).build().parseClaimsJws(token);
+                Jwts.parserBuilder().setSigningKey(getSecret(secret)).build().parseClaimsJws(token);
             } catch (ExpiredJwtException e) {
-                Claims claims = Jwts.parserBuilder()
-                                    .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
-                                    .build()
-                                    .parseClaimsJws(token)
-                                    .getBody();
-
+                JWT jwt = JWTParser.parse(token);
+                JWTClaimsSet claims = jwt.getJWTClaimsSet();
                 String username = claims.getSubject();
                 @SuppressWarnings("unchecked")
-                List<String> roles = claims.get("roles",List.class);
+                List<String> roles =  (List<String>) claims.getClaim("roles");
            
+            // return "token nuevo";                                     .setSigningKey()
             return Jwts.builder()
-                        .setSubject(username).
-                        claim("roles",roles).
-                        setExpiration(new Date(new Date().getTime()+exp*180))
-                        .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
+                        .setSubject(username)
+                        .claim("roles",roles)
+                        .setIssuedAt(new Date())
+                        .setExpiration(new Date(new Date().getTime()+exp*5))
+                        .signWith((getSecret(secret)), SignatureAlgorithm.HS256)
                         .compact();
             }
 
             return null;
+    }
+
+       private Key getSecret(String secret){
+        
+        return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
 
