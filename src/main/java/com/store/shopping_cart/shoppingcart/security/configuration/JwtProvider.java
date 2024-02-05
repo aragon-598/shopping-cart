@@ -48,7 +48,7 @@ public class JwtProvider {
                     .setSubject(userDetails.getUsername())
                     .claim("roles", roles)
                     .setIssuedAt(new Date())
-                    .setExpiration(new Date(new Date().getTime()+exp*5))
+                    .setExpiration(new Date(new Date().getTime()+exp*180))
                     .signWith((getSecret(secret)), SignatureAlgorithm.HS256)
                     .compact();
     }
@@ -100,7 +100,7 @@ public class JwtProvider {
                         .setSubject(username)
                         .claim("roles",roles)
                         .setIssuedAt(new Date())
-                        .setExpiration(new Date(new Date().getTime()+exp*5))
+                        .setExpiration(new Date(new Date().getTime()+exp*180))
                         .signWith((getSecret(secret)), SignatureAlgorithm.HS256)
                         .compact();
             }
